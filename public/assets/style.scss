@@ -1,0 +1,27 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #000;
+  color: #999;
+
+  .top-wrapper {
+    display: flex;
+    height: 80%;
+    .live-view {
+      width: 80%
+    }
+    .task-creator {
+      width: auto;
+      flex-grow: 1;
+      background: #111;
+    }
+  }
+  .tasks-flow {
+    width: 100%;
+    background: #111;
+    flex-grow: 1;
+  }
+}

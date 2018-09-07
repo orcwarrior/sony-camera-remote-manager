@@ -1,0 +1,32 @@
+{
+  "name": "sony-camera-remote-manager",
+  "version": "0.0.0",
+  "description": "Sony Camera Remote Manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "Sony",
+    "Camera",
+    "API",
+    "Tasks",
+    "Remote",
+    "Scripts",
+    "Visual"
+  ],
+  "author": "Dariusz Kobuszewski",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
+    "sony-camera": "0.0.6",
+    "vue": "^2.5.17"
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-plugin-node": "^7.0.1"
+  }
+}
