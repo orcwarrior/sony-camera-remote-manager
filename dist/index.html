@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sony Camera Remote Manager</title>
+    
+</head>
+<body bgcolor="#000" id="app">
+<section id="live-view">
+    <p class="center-text" rv-class-hidden="camera.state | eq 'CONNECTED' ">
+        {liveViewText | call} <br/>
+        {camera.state} <br/>
+        <button rv-on-click="camera.reconnect"
+        rv-if="camera.state | neq 'CONNECTED'">Try Reconnect</button>
+    </p>
+    <img rv-src="camera.liveview">
+</section>
+<section class="task-creator">
+    Create new task
+    <i class="material-icons">face</i>
+</section>
+<section class="tasks-flow">
+    Tasks flow
+</section>
+
+<script type="text/javascript" src="bundle.js"></script></body>
+</html>
