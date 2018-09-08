@@ -1,0 +1,50 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+body {
+  display: grid;
+  width: 100%;
+  background: #000;
+  color: #999;
+  grid-template-columns: auto auto;
+  grid-template-rows: 80% auto;
+  grid-template-areas: "view sidebar" "footer footer";
+  #live-view {
+    display: inline-flex;
+    position: relative;
+    align-self: stretch;
+    justify-content: center;
+    grid-area: view;
+    img {
+      position: absolute;
+      height: 100%;
+
+    }
+    .center-text {
+      position: relative;
+      z-index: 1;
+      font-size: 22px;
+      text-align: center;
+      align-self: center;
+      opacity: 1;
+      transition: opacity 0.5s;
+      &.hidden {
+        opacity: 0;
+      }
+    }
+  }
+  .task-creator {
+    grid-area: sidebar;
+    background: #070505;
+  }
+  .tasks-flow {
+    grid-area: footer;
+    background: #050705;
+  }
+}
+
+@import "material-icons";
