@@ -19,6 +19,33 @@ body {
     align-self: stretch;
     justify-content: center;
     grid-area: view;
+    ul.status-icons {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      right: 0;
+      width: 80px;
+      li {
+        color: #ddd;
+        font-size: 13px;
+        font-weight: light;
+        text-transform: uppercase;
+        text-align: center;
+        list-style-type: none;
+        margin-bottom: 2em;
+        div {
+          display: block;
+          &.big {
+            font-weight: 400;
+            letter-spacing: 1px;
+            font-size: 18px;
+          }
+        }
+      }
+    }
     img {
       position: absolute;
       height: 100%;

@@ -2,34 +2,50 @@ import rivets from "rivets"
 import "../rivets.formatters";
 import {camera, CAM_STATE} from "../camera";
 
-const paramIcons = {
-    /*
-cameraFunction
-:
-{current: "Remote Shooting", available: Array(2)}
-exposureMode
-:
-{current: "Aperture", available: Array(0)}
-flashMode
-:
-{current: "on", available: Array(0)}
-focusMode
-:
-{current: "MF", available: Array(0)}
-postviewImageSize
-:
-{current: "2M", available: Array(1)}
-selfTimer
-:
-{current: 0, available: Array(3)}
-shootMode
-:
-{current: "still", available: Array(1)}
-shutterSpeed
-:
-{current: "1/3", available: Array(0)}
-*/
-}
+const paramsMeta = {
+    cameraFunction: {
+        disabled: true,
+        icon: null,
+        prefix: "MODE: "
+    },
+    exposureMode: {
+        prefix: "WHEEL: &nbsp;",
+        icons: {
+            "Program Auto": "insert_emoticon",
+            "Aperture": "camera",
+            "Shutter": "shutter_speed",
+            "Manual": "settings_applications",
+            "Inteligent Auto": "adb",
+            "Superior Auto": "child_care"
+        },
+    },
+    fNumber: {
+        icon: 'camera',
+        PREFIX: "F:"
+    },
+    flashMode: {disabled: true, prefix: "Flash-sync: "},
+    focusMode: {icon: "center_focus_weak"},
+    isoSpeedRate: {icon: "iso", prefix: "ISO: "},
+    postviewImageSize: {icon: "linked_camera"},
+    selfTimer: {
+        icons: {
+            0: "timer_off",
+            2: "timer_3", // FIX?
+            10: "timer_10",
+        }
+    },
+    shootMode: {
+        icons: {
+            "still": "camera_alt",
+            "movie": "videocam",
+            "audio": "per_camera_mic",
+        }
+    },
+    shutterSpeed: {
+        class: "big",
+        icon: "shutter_speed"
+    }
+};
 let state = {
     // TO CameraAPI,
     camera,
@@ -41,8 +57,18 @@ let state = {
             return "Connecting with camera...";
         else return "---";
     },
-    describeParam: (name, value) => {
-
+    describeParam: function (name) {
+        if (this.camera._forceUpdate) this.camera._forceUpdate = false;
+        const value = this.camera.status[name].current;
+        const meta = paramsMeta[name];
+        if (meta && meta.disabled) return "";
+        const icon = meta && meta.icon;
+        const prefix = meta && meta.prefix || "";
+        const cssClass = meta && meta.class || "";
+        const iconConcrete = (meta && meta.icons) ? meta.icons[value] : null;
+        if (iconConcrete) return `${prefix}<i class="material-icons">${iconConcrete}</i>`;
+        else if (icon) return `<i class="material-icons">${icon}</i><div class="value ${cssClass}">${prefix}${value}</div>`;
+        else return `<div class="value ${cssClass}">${prefix}${value}</div>`;
     }
 };
 

@@ -8,13 +8,12 @@ const cam = new SonyCamera();
 
 cam.on("update", function (param, data) {
     console.log("updated: " + param + " = ", data);
+    io.emit("camera-param-update", {param, data});
 });
 cam.connect((...args) => {
-    console.log(cam.availableApiList);
-    console.log(cam.params);
     console.log("Connected to camera!");
-    console.log(args);
-    io.emit("camera-connected", cam);
+    const camParams = Object.assign({}, cam.params);
+    io.emit("camera-connected", {...cam, ...{params: camParams}});
     cam.startViewfinder()
 });
 cam.on("disconnected", () => {
@@ -31,18 +30,15 @@ io.on("connection", function (socket) {
     if (cam.connected)
         socket.emit("camera-connected", cam);
     socket.on("camera-reconnect", function (socket) {
-        console.log("Trying reconnection on client demand...")
-        cam.connect((...args) => {
-            console.log(cam.availableApiList);
-            console.log(cam.params);
+        console.log("Trying reconnection on client demand...");
+        cam.connect(() => {
             console.log("Connected to camera!");
-            console.log(args);
-            io.emit("camera-connected", cam);
+            const camParams = Object.assign({}, cam.params);
+            io.emit("camera-connected", {...cam, ...{params: camParams}});
             cam.startViewfinder()
         });
     });
 });
-
 
 
 app.use(express.static("dist"));

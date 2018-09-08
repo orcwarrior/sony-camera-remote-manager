@@ -9,6 +9,11 @@
 </head>
 <body bgcolor="#000" id="app">
 <section id="live-view">
+    <ul class="status-icons">
+        <li rv-each-stat="camera.statusKeys" rv-html="describeParam | call stat camera._forceUpdate">
+            <!--{ }-->
+        </li>
+    </ul>
     <p class="center-text" rv-class-hidden="camera.state | eq 'CONNECTED' ">
         {liveViewText | call} <br/>
         {camera.state} <br/>

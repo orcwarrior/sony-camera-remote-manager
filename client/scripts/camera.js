@@ -14,27 +14,39 @@ const CAM_STATE = {
 let camera = {
     state: CAM_STATE.UNKNOWN,
     socketIoState: "Socket.IO: Waiting",
+    isUpdating: false,
     reconnect: () => {
-        socket.emit('camera-reconnect', null);
-    }
+        socket.emit("camera-reconnect", null);
+    },
+    params: {}
 };
-socket.on("connection", function(socket) {
+socket.on("connection", function (socket) {
     camera.socketIoState = "Socket.IO: Connected";
 });
 
 socket.on("camera-connected", function (camObj) {
     camera.api = camObj;
-    console.log(camera.api);
+    camera.status = {...camera.status, ...camObj.params};
+    camera.statusKeys = Object.keys(camera.status);
+    console.log(camObj);
     camera.state = CAM_STATE.CONNECTED;
 });
+socket.on("camera-param-update", function (update) {
+    console.log(`Camera UP: `, update);
+    camera.status = {...camera.status, ...{[update.param]: update.data}};
+    camera._forceUpdate = true;
+});
+
 socket.on("camera-disconnected", function (camObj) {
     camera.state = CAM_STATE.DISCONNECTED;
+    delete camera.status;
+    delete camera.statusKeys;
 });
 
 socket.on("camera-liveview", function (buffer) {
-    const blob = new Blob( [ buffer ], { type: "image/jpeg" } );
+    const blob = new Blob([buffer], {type: "image/jpeg"});
     const urlCreator = window.URL || window.webkitURL;
-    const imgUrl = urlCreator.createObjectURL( blob );
+    const imgUrl = urlCreator.createObjectURL(blob);
     camera.liveview = imgUrl;
 });
 
