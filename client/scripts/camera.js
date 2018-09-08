@@ -1,4 +1,5 @@
 import client from "socket.io-client"
+import CameraAPI from "./CameraAPI";
 
 const socket = client("http://localhost:6969");
 
@@ -29,12 +30,15 @@ socket.on("camera-connected", function (camObj) {
     camera.status = {...camera.status, ...camObj.params};
     camera.statusKeys = Object.keys(camera.status);
     console.log(camObj);
+    CameraAPI.__decorate(camObj.availableApiList);
+    CameraAPI.__updateParams(camObj.params);
     camera.state = CAM_STATE.CONNECTED;
 });
 socket.on("camera-param-update", function (update) {
     console.log(`Camera UP: `, update);
     camera.status = {...camera.status, ...{[update.param]: update.data}};
     camera._forceUpdate = true;
+    CameraAPI.__updateParams({[update.param]: update.data});
 });
 
 socket.on("camera-disconnected", function (camObj) {
