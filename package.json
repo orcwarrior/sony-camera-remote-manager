@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "watch": "webpack --watch",
+    "build": "webpack -p"
   },
   "keywords": [
     "Sony",
@@ -20,13 +22,27 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
+    "material-design-icons": "^3.0.1",
     "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1",
-    "sony-camera": "0.0.6",
-    "vue": "^2.5.17"
+    "sony-camera": "0.0.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "css-loader": "^0.28.11",
     "eslint": "^5.5.0",
-    "eslint-plugin-node": "^7.0.1"
+    "eslint-plugin-node": "^7.0.1",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.2",
+    "node-sass": "^4.8.3",
+    "rivets": "^0.9.6",
+    "sass-loader": "^6.0.7",
+    "socket.io-client": "^2.1.1",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
   }
 }
