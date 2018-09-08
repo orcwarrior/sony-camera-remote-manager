@@ -2,7 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.NODE_ENV !== "production"
+const devMode = process.env.NODE_ENV !== "production";
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 const webpackOption = {
     entry: "./client/app.js",
@@ -53,6 +54,12 @@ const webpackOption = {
             // both options are optional
             filename: devMode ? "[name].css" : "[name].[hash].css",
             chunkFilename: devMode ? "[id].css" : "[id].[hash].css",
+        }),
+        new WebpackBuildNotifierPlugin({
+            title: "Sony Cam Remote Manager",
+            logo: path.resolve("./node_modules/material-design-icons/image/2x_web/ic_camera_black_48dp.png"),
+            suppressSuccess: "initial",
+            suppressWarning: true
         })
     ]
 };
