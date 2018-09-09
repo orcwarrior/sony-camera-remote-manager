@@ -77,12 +77,19 @@
     </section>
     <section class="tasks-flow">
         <header>
-            <h3>Camera Task Sequence</h3>
             <!-- TODO: Switch between them with rivets-->
             <a class="btn" id="start-tasks"><span>START SEQUENCE</span><i class="material-icons">play_circle_filled</i></a>
             <a class="btn" id="pause-tasks"><span>PAUSE SEQUENCE</span><i class="material-icons">pause_circle_filled</i></a>
 
         </header>
+        <section class="task-container">
+            <div rv-each-task="taskManager.tasks" class="task" rv-on-click="editTask">
+                {task.name}
+                <div class="code" style="white-space: pre-line">
+                    {task.code}
+                </div>
+            </div>
+        </section>
     </section>
 </div>
 </body>
