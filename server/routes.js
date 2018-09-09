@@ -1,5 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const fs = require("fs");
+const http = require("http");
+let photoAlbum = {};
 module.exports = (app, camera) => {
 
     const apiRouter = express.Router();
@@ -24,20 +27,32 @@ module.exports = (app, camera) => {
         });
     });
     apiRouter.get("/capture", (req, res) => {
-        camera.capture((err, data) => {
-            if (err) res.status(500).json(err);
-            else res.json(data);
-        });
+        const captureCb = (err, {photoName, photoBuffer, url} = {}) => {
+            console.log(`pn: ${photoName}, bufLen: ${photoBuffer && photoBuffer.length} / err: `, err);
+            if (photoName && url)
+                photoAlbum[photoName] = url;
+
+            if (err) return res.status(500).json(err);
+            console.log("Photo captured, waiting until camera is IDLE again.../" + photoName);
+            camera.once("ready", status => {
+                console.log(`camStatus: ${status}`);
+                if (photoName) {
+                    return res.json({filename: photoName});
+                }
+            });
+        };
+        camera.capture(captureCb);
     });
+
     apiRouter.get("/zoom/in", (req, res) => {
         camera.zoomIn((err, data) => {
-            if (err) res.status(500).json(err);
+            if (err) console.error(err) || res.status(500).json(err);
             else res.json(data);
         });
     });
     apiRouter.get("/zoom/out", (req, res) => {
         camera.zoomOut((err, data) => {
-            if (err) res.status(500).json(err);
+            if (err) console.error(err) || res.status(500).json(err);
             else res.json(data);
         });
     });
@@ -54,5 +69,21 @@ module.exports = (app, camera) => {
             else res.json(data);
         })
     });
-    app.use("/api", apiRouter)
+    apiRouter.get("/photoalbum/:photoName", (req, res) => {
+        const {photoName} = req.params;
+        const photoUrl = photoAlbum[photoName];
+        console.log("Getting Image: " + photoUrl);
+
+        const camReq = http.get(photoUrl, (sonyCameraResponse) => {
+           res.setHeader("Content-disposition", `attachment; filename=${photoName}`);
+           res.setHeader("Content-tye", "image/jpg");
+           sonyCameraResponse.pipe(res);
+        });
+        camReq.on("error", (err) => res.status(500).send(err));
+    });
+
+    app.use("/api", apiRouter);
+
+    app.use(express.static("dist"));
+    app.use(express.static("photos"));
 };
