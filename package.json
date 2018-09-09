@@ -21,17 +21,19 @@
   "author": "Dariusz Kobuszewski",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "body-parser": "latest",
+    "codemirror": "^5.40.0",
     "express": "^4.16.3",
+    "lodash": "latest",
     "material-design-icons": "^3.0.1",
-    "monaco-editor": "^0.14.3",
     "socket.io": "^2.1.1",
     "sony-camera": "0.0.6",
-    "body-parser": "latest",
-    "lodash": "latest"
+    "tern": "^0.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-async-to-generator": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
     "css-loader": "^0.28.11",
