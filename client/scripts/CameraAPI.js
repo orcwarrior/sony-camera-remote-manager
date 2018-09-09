@@ -1,4 +1,5 @@
 import _ from "lodash";
+import ternInitialize from "./components/codeEditorTern";
 
 const apiUrl = "http://localhost:6969/api";
 const fetchGETConfig = {
@@ -8,51 +9,74 @@ const fetchGETConfig = {
 const fetchPostConfig = (body) => ({
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body
+    body: JSON.stringify(body)
 });
 
+async function handleResponse(res) {
+    const body = await res.json();
+    if (res.ok) return body;
+    else throw new Error(`[${res.status}]${res.statusText}:  ${JSON.stringify(body)}`);
+}
+
 const api = {
+    __photosTaken: 0,
     _call: (method, params) => {
         console.log("Called call:", method, params);
-        // return fetch(`${apiUrl}/call`, fetchPostConfig({method, params}))
-        //     .then(data => data.json())
-        //     .catch(err => new Error(err));
+        const finalParams = Array.isArray(params) ? params : [params];
+        return fetch(`${apiUrl}/call`,
+            fetchPostConfig({method, params: finalParams}))
+            .then(handleResponse)
+    },
+    halfPressShutter: function () {
+        return this._call("actHalfPressShutter", []);
+    },
+    depressShutter: function () {
+        return this._call("cancelHalfPressShutter", []);
     },
     startViewfinder: () => {
         return fetch(`${apiUrl}/viewfinder/start`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
             .catch(err => new Error(err));
 
     },
     stopViewfinder: () => {
         return fetch(`${apiUrl}/viewfinder/stop`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
             .catch(err => new Error(err));
 
     },
-    capture: () => {
+    capture: function () {
         return fetch(`${apiUrl}/capture`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
+            .then(photoName => ++this.__photosTaken && photoName)
+            .catch(err => new Error(err));
+    },
+    captureAndSave: function () {
+        return this.capture()
+            .then(({filename}) => {
+                downloadUrl(`${apiUrl}/photoalbum`, filename);
+                return `${apiUrl}/photoalbum/${filename}`;
+            })
             .catch(err => new Error(err));
     },
     zoomIn: () => {
         return fetch(`${apiUrl}/zoom/in`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
             .catch(err => new Error(err));
     },
     zoomOut: () => {
         return fetch(`${apiUrl}/zoom/out`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
             .catch(err => new Error(err));
     },
     version: () => {
         return fetch(`${apiUrl}/version`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
             .catch(err => new Error(err));
     },
     set: (param, value) => {
         return fetch(`${apiUrl}/set/${param}/${value}`, fetchGETConfig)
-            .then(data => data.json())
+            .then(handleResponse)
             .catch(err => new Error(err));
     },
     __decorate: function (availableApiList) {
@@ -84,13 +108,13 @@ const api = {
                 const ccKey = camelCase(key);
                 if (!call[ccKey]) call[ccKey] = {};
 
-                call[ccKey][method] = (params) => {
-                    return this._call(`${keyToPrefix[key]}${key}`, params)
+                call[ccKey][method] = (params = []) => {
+                    return this._call(`${methodToPrefix[method]}${key}`, params)
                 }
             })
         });
 
-        const keyToPrefix = {
+        const methodToPrefix = {
             "supported": "getSupported",
             "available": "getAvailable",
             "get": "get",
@@ -100,15 +124,27 @@ const api = {
         function camelCase(s) {
             return `${s[0].toLowerCase()}${s.substr(1)}`
         }
+
+        setTimeout(() => ternInitialize(this), 1);
     },
     __updateParams: function (camParams) {
         Object.keys(this.call).forEach(method => {
             if (camParams[method])
                 this.call[method].val = camParams[method];
         });
-        console.log(this);
+
+
     }
 };
+
+function downloadUrl(uri, filename) {
+    console.log(`downlaod: ${uri}/${filename}`);
+    let link = document.createElement("a");
+    link.href = `${uri}/${filename}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 export default api;
 
