@@ -4,9 +4,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = process.env.NODE_ENV !== "production";
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+require("@babel/polyfill");
 
 const webpackOption = {
-    entry: "./client/app.js",
+    entry: ["@babel/polyfill", "./client/app.js"],
+    // entry: "./client/app.js",
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js",
@@ -20,7 +23,8 @@ const webpackOption = {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ["@babel/preset-env"]
+                        presets: ["@babel/preset-env"],
+                        plugins: ["@babel/plugin-transform-async-to-generator"]
                     }
                 }
             },
@@ -30,6 +34,12 @@ const webpackOption = {
                     {loader: devMode ? "style-loader" : MiniCssExtractPlugin.loader},
                     {loader: "css-loader" /* translates CSS into CommonJS*/},
                     {loader: "sass-loader" /* compiles Sass to CSS*/}]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    {loader: devMode ? "style-loader" : MiniCssExtractPlugin.loader},
+                    {loader: "css-loader" /* translates CSS into CommonJS*/}]
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -42,6 +52,9 @@ const webpackOption = {
                 }]
             }]
     },
+    // optimization: {
+    //     minimizer: devMode ? [] : [new UglifyJsPlugin]
+    // },
     plugins: [
         new HtmlWebpackPlugin({
             files: {
