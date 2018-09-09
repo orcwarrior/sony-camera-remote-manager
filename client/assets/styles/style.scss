@@ -6,71 +6,247 @@ html, body {
 }
 
 body {
-  display: grid;
-  width: 100%;
-  background: #000;
-  color: #999;
-  grid-template-columns: auto auto;
-  grid-template-rows: 80% auto;
-  grid-template-areas: "view sidebar" "footer footer";
-  #live-view {
-    display: inline-flex;
-    position: relative;
-    align-self: stretch;
-    justify-content: center;
-    grid-area: view;
-    ul.status-icons {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
+  .main-grid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #999;
+    grid-template-columns: 68% 2px 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: "view splitter sidebar" "footer footer footer";
+    #live-view {
+      min-height: 80%;
+      display: inline-flex;
+      position: relative;
+      align-self: stretch;
       justify-content: center;
-      align-items: center;
-      z-index: 1;
-      right: 0;
-      width: 80px;
-      li {
-        color: #ddd;
-        font-size: 13px;
-        font-weight: light;
-        text-transform: uppercase;
-        text-align: center;
-        list-style-type: none;
-        margin-bottom: 2em;
-        div {
-          display: block;
-          &.big {
-            font-weight: 400;
-            letter-spacing: 2px;
-            font-size: 18px;
+      grid-area: view;
+      overflow: hidden;
+      ul.status-icons {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        right: 0;
+        width: 80px;
+        li {
+          color: #ddd;
+          font-size: 13px;
+          font-weight: 300;
+          text-transform: uppercase;
+          text-align: center;
+          list-style-type: none;
+          margin-bottom: 2em;
+          div {
+            display: block;
+            &.big {
+              font-weight: 400;
+              letter-spacing: 2px;
+              font-size: 18px;
+            }
           }
         }
       }
-    }
-    img {
-      position: absolute;
-      height: 100%;
-
-    }
-    .center-text {
-      position: relative;
-      z-index: 1;
-      font-size: 22px;
-      text-align: center;
-      align-self: center;
-      opacity: 1;
-      transition: opacity 0.5s;
-      &.hidden {
-        opacity: 0;
+      .liveimg-wrapper {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        img {
+          object-fit: contain;
+          height: 100%;
+        }
+      }
+      .center-text {
+        position: relative;
+        z-index: 1;
+        font-size: 22px;
+        text-align: center;
+        align-self: center;
+        opacity: 1;
+        transition: opacity 0.5s;
+        &.hidden {
+          opacity: 0;
+        }
       }
     }
+
+    #splitter {
+      position: relative;
+      grid-area: splitter;
+      width: 100%;
+      height: 100%;
+      background: #666;
+      .left, .right {
+        position: absolute;
+        cursor: pointer;
+        top: 4px;
+        width: 32px;
+        > i {
+          color: #ccc;
+        }
+      }
+      .left {
+        left: -32px;
+      }
+      .right {
+        left: 8px;
+      }
+      .center {
+        position: absolute;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+
+    }
+    .tasks-manager {
+      grid-area: sidebar;
+      background: #040404;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      .tabs-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px 24px 0;
+        background: #040404;
+        text-transform: uppercase;
+        font-weight: 300;
+        font-size: 14px;
+      }
+      .tab {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        margin: 0 0 -1px;
+        padding: 15px 25px;
+        text-align: center;
+        color: #888;
+        border: 1px transparent solid;
+        &.active {
+          background: #1e1e1e;
+          border: 1px #222 solid;
+          border-bottom: none;
+          border-radius: 3px 3px 0 0;
+          color: #ccc;
+        }
+        &:not(.active) {
+          cursor: pointer;
+        }
+      }
+      .tab-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        background: #1e1e1e;
+        border-top: 1px solid black;
+        padding: 12px 8px 8px;
+        .btns-wrapper {
+          display: flex;
+          align-items: stretch;
+          .btn {
+          }
+        }
+      }
+      .editor-wrapper {
+        position: relative;
+        display: block;
+        #code-editor {
+          position: absolute;
+          font-size: 13px;
+          height: 100%;
+          width: 100%;
+          flex-grow: 1;
+          background: #111;
+          color: #444;
+          border: 0;
+          .cur-line-gutter {
+            position: relative;
+            left: 2px;
+            color: #593;
+            &.error {
+              left: 4px;
+              font-size: bold;
+              color: #933;
+            }
+          }
+        }
+      }
+      .tab-inner-container {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .logs-container {
+        background: #131313;
+        color: #666;
+        flex-grow: 1;
+        margin-bottom: 8px;
+        font-family: Andale Mono, monospace;
+        font-size: 11px;
+        &:empty:before {
+          font-size: 13px;
+          content: "(Looks like there's no logs to watch right now...)";
+        }
+      }
+
+    }
+    .tasks-flow {
+      grid-area: footer;
+      background: #050705;
+    }
   }
-  .task-creator {
-    grid-area: sidebar;
-    background: #070505;
+  .justify-center {
+    justify-content: center;
   }
-  .tasks-flow {
-    grid-area: footer;
-    background: #050705;
+  .justify-end {
+    justify-content: flex-end;
+  }
+}
+
+body {
+  .CodeMirror-hint, li.CodeMirror-hint-active {
+    padding-left: 24px !important;
+  }
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.4em 0.8em 0.25em;
+  border: 0.1em solid #ddd;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: #ddd;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    color: #000000;
+    background-color: #ddd;
+  }
+  span {
+    position: relative;
+    top: -6px;
+  }
+  i.material-icons {
+    margin-left: 4px;
+    font-size: 22px;
+  }
+}
+
+@media all and (max-width: 30em) {
+   a.btn {
+      display: block;
+      margin: 0.4em auto;
   }
 }
 
