@@ -3,18 +3,18 @@ module.exports = (server, camera) => {
     const io = require("socket.io")(server);
 
     camera.on("update", function (param, data) {
-        console.log("updated: " + param + " = ", data);
+        console.log(`updated: ${param} = ${data} cam.ready/state= ${camera.ready}/${camera.status}`);
         io.emit("camera-param-update", {param, data});
     });
     camera.connect((...args) => {
         console.log("Connected to camera!");
         const camParams = Object.assign({}, camera.params);
-        console.log("Available APIs: ", camera.availableApiList);
+        // console.log("Available APIs: ", camera.availableApiList);
         io.emit("camera-connected", {...camera, ...{params: camParams}});
         camera.startViewfinder()
     });
     camera.on("disconnected", () => {
-        console.log("DISCONNECTED...")
+        console.log("DISCONNECTED...");
         io.emit("camera-disconnected", camera);
     });
 
