@@ -20,10 +20,10 @@ const TaskManager = {
     },
     addTask: function (task) {
         this.tasks.push(task);
-        this.tasks = _.uniqBy(this.tasks, name);
+``        this.tasks = _.uniqBy(this.tasks, "name");
     },
     runTask: async function (task) {
-        log.addLog(`Running task: ${task.name}...`);
+        log.addLog(`Running task: <b>${task.name}</b>...`);
         const taskEvalCode = evalWrapper(task);
 
         async function evalContext(CameraAPI, config, global, gotoTask, utils, log) {
@@ -44,6 +44,7 @@ const TaskManager = {
         await evalContext(cameraApi, this.config, this.global, this.gotoTask, taskUtils, log.addLog.bind(log));
     },
     runAllTasks: async function () {
+        codeEditor.updateTaskCode();
         log.clearLogs();
         asyncForEach(this.tasks, async (task) => {
             await runTask(task);
@@ -61,15 +62,15 @@ function defaultTaskName(taskMan) {
     return `Task_${taskMan.tasks.length + 1}`;
 }
 
-const defaultTaskCode = (taskName) =>
-    `  // ${taskName}:
-   await utils.wait(1000);
-   log("Waited 1sec; ready to do sth with CameraAPI object!");
-   await CameraAPI.halfPressShutter()`;
+const defaultTaskCode = (taskName) => `// ${taskName}:
+await utils.wait(1000);
+log("Waited 1sec; ready to do sth with CameraAPI object!");
+await CameraAPI.halfPressShutter()`;
+
 // DOM Handlers:
 const newTaskBtn = document.querySelector(".create-task-btn");
 newTaskBtn.addEventListener("click", (evt) => {
-    window.prompt("Name of new task", defaultTaskName(TaskManager.code));
+    window.prompt("Name of new task", defaultTaskName(TaskManager));
     const task = TaskManager.createTask();
     TaskManager.addTask(task);
     codeEditor.setCurrentTask(task);
