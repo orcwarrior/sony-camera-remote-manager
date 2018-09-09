@@ -46,7 +46,7 @@ const paramsMeta = {
         icon: "shutter_speed"
     }
 };
-let state = {
+let liveViewModel = {
     // TO CameraAPI,
     camera,
     // socketIoState: () => camera.socketIoState,
@@ -72,4 +72,5 @@ let state = {
     }
 };
 
-rivets.bind(document.querySelector("#live-view"), state);
+rivets.bind(document.querySelector("#live-view"), liveViewModel);
+export {liveViewModel};
