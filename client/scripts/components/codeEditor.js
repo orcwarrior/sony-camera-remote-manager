@@ -25,8 +25,9 @@ import "../../../node_modules/codemirror/theme/darcula.css";
 
 const taskEditorTab = document.querySelector(".task.tab-content");
 
-const defaultValue = ` // No task loaded, treat this code as Scratchpad ;-)
-  await CameraAPI.captureAndSave();
+const defaultValue =
+`// No task loaded, treat this code as Scratchpad ;-)
+await CameraAPI.captureAndSave();
 `;
 const taskEditor = CodeMirror(taskEditorTab.querySelector("#code-editor"),{
     lineNumbers: true,
@@ -47,7 +48,12 @@ let editorModel = {
       this.editor.setValue(task.code);
       this.currentTaskEdited = task;
     },
-    currentTaskEdited: null // null -> scratchpad
+    currentTaskEdited: null, // null -> scratchpad
+    updateTaskCode: function () {
+        if (this.currentTaskEdited && this.currentTaskEdited.code) {
+            this.currentTaskEdited.code = this.editor.getValue();
+        }
+    }
 };
 
 

@@ -17,6 +17,7 @@ const taskManagerModel = {
 
 rivets.bind(taskManEl, taskManagerModel);
 taskRunBtn.addEventListener("click", (e) => {
+    codeEditor.updateTaskCode();
     const taskToRun = codeEditor.currentTaskEdited
         || {name: "Stratchpad-task", code: codeEditor.editor.getValue()};
     TaskManager.runTask(taskToRun);
