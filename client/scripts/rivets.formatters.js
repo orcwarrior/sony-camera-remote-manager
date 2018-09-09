@@ -245,6 +245,9 @@ rivets.formatters.with = function(/*fn, arg1, arg2, ..., argN*/)
 
     return fn;
 };
+rivets.formatters.joinMarkup = function(arr = []) {
+    return arr.join("<br/>");
+};
 
 rivets.formatters.slice = function() {
     let args = Array.from(arguments);
