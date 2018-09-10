@@ -20,7 +20,7 @@ const TaskManager = {
     },
     addTask: function (task) {
         this.tasks.push(task);
-``        this.tasks = _.uniqBy(this.tasks, "name");
+        this.tasks = _.uniqBy(this.tasks, "name");
     },
     runTask: async function (task) {
         log.addLog(`Running task: <b>${task.name}</b>...`);
