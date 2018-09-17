@@ -3,8 +3,8 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = process.env.NODE_ENV !== "production";
-const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const WebpackBuildNotifierPlugin = require("webpack-build-notifier");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 require("@babel/polyfill");
 
 const webpackOption = {
@@ -42,12 +42,17 @@ const webpackOption = {
                     {loader: "css-loader" /* translates CSS into CommonJS*/}]
             },
             {
+                test: /\.html$/,
+                exclude: /template.html$/,
+                use: [{loader: "html-loader" /* translates CSS into CommonJS*/}]
+            },
+            {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [{
-                    loader: 'file-loader',
+                    loader: "file-loader",
                     options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
+                        name: "[name].[ext]",
+                        outputPath: "fonts/"
                     }
                 }]
             }]
@@ -57,6 +62,7 @@ const webpackOption = {
     // },
     plugins: [
         new HtmlWebpackPlugin({
+            title: "Sony Camera Remote Manager",
             files: {
                 css: ["./assets/style.css"],
             },

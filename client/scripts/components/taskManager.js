@@ -3,7 +3,7 @@ import rivets from "rivets";
 import TaskManager from "../logic/TaskManager";
 import codeEditor from "./codeEditor";
 
-const taskManEl = document.querySelector(".tasks-manager");
+const rightEditPanelEl = document.querySelector(".right-edit-panel");
 const taskRunBtn = document.querySelector(".test-code-btn");
 // TODO: This component is not that much "TaskManager"
 // More it's tooling setups, etc. -> name it properly
@@ -15,7 +15,7 @@ const taskManagerModel = {
     },
 };
 
-rivets.bind(taskManEl, taskManagerModel);
+rivets.bind(rightEditPanelEl, taskManagerModel);
 taskRunBtn.addEventListener("click", (e) => {
     codeEditor.updateTaskCode();
     const taskToRun = codeEditor.currentTaskEdited

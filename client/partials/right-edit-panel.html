@@ -1,0 +1,37 @@
+<section class="right-edit-panel">
+    <header class="tabs-wrapper">
+        <div class="tab" rv-on-click="createChangeTab | call 'Config'"
+             rv-class-active="activeTab | eq 'Config'">Config
+        </div>
+        <div class="tab" rv-on-click="createChangeTab | call 'Task'"
+             rv-class-active="activeTab | eq 'Task'">Task Editor
+        </div>
+        <div class="tab" rv-on-click="createChangeTab | call 'Log'"
+             rv-class-active="activeTab | eq 'Log'">Log
+        </div>
+    </header>
+    <section class="config tab-content" rv-show="activeTab | eq 'Config'">
+        Config content
+    </section>
+
+    <section class="task tab-content" rv-show="activeTab | eq 'Task'">
+        <div class="btns-wrapper">
+            <a class="test-code-btn btn"><span>TEST CODE</span><i class="material-icons">play_arrow</i></a>
+            <a class="create-task-btn btn"><span>CREATE NEW TASK</span><i
+                    class="material-icons">add_circle_outline</i></a>
+        </div>
+        <div class="editor-wrapper">
+            <div id="code-editor"></div>
+        </div>
+    </section>
+
+    <section class="log tab-content" rv-show="activeTab | eq 'Log'">
+        <div class="tab-inner-container logs-container" rv-html="logs | joinMarkup">
+
+        </div>
+        <div class="btns-wrapper justify-end">
+            <a class="test-code-btn btn" rv-on-click="clearLogs">
+                <span>CLEAR</span><i class="material-icons">delete</i></a>
+        </div>
+    </section>
+</section>
