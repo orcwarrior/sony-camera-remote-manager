@@ -1,0 +1,60 @@
+.main-grid > #live-view {
+  min-height: 100%;
+  display: inline-flex;
+  position: relative;
+  align-self: stretch;
+  justify-content: center;
+  grid-area: view;
+  overflow: hidden;
+  ul.status-icons {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    right: 0;
+    width: 80px;
+    li {
+      color: #ddd;
+      font-size: 13px;
+      font-weight: 300;
+      text-transform: uppercase;
+      text-align: center;
+      list-style-type: none;
+      margin-bottom: 2em;
+      div {
+        display: block;
+        &.big {
+          font-weight: 400;
+          letter-spacing: 2px;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  .liveimg-wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    img {
+      object-fit: contain;
+      height: 100%;
+    }
+  }
+  .center-text {
+    position: relative;
+    z-index: 1;
+    font-size: 22px;
+    text-align: center;
+    align-self: center;
+    opacity: 1;
+    transition: opacity 0.5s;
+    &.hidden {
+      opacity: 0;
+    }
+    > .btn {
+      margin-top: 24px;
+    }
+  }
+}
