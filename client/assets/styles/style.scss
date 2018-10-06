@@ -5,8 +5,9 @@ html, body {
   font-family: sans-serif;
 }
 
-@import "./_live-view.scss";
+@import "./live-view";
 @import "./right-edit-panel";
+@import "./tasks-flow";
 body {
 
   .main-grid {

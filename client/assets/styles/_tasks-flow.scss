@@ -27,7 +27,18 @@
       border-radius: 3px;
       background: #000;
       border: 1px #222 solid;
+      cursor: pointer;
+      &.active {
+        border: 1px #777 solid;
+      }
+      &.edited {
+        > .name {
+          color: #b94;
+          font-weight: 500;
+        }
+      }
       .code {
+        width: 200%;
         text-align: left;
         opacity: 0.3;
         font-size: 8px;
