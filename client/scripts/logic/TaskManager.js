@@ -8,6 +8,7 @@ const TaskManager = {
     config: {sample: "Hello"},
     global: {},
     tasks: [],
+    runningTask: null,
     scriptCursor: {
         name: null, line: null
     },
@@ -24,9 +25,12 @@ const TaskManager = {
     },
     runTask: async function (task) {
         log.addLog(`Running task: <b>${task.name}</b>...`);
+        this.runningTask = task;
         const taskEvalCode = evalWrapper(task);
+        codeEditor.setCurrentTask(task);
 
-        async function evalContext(CameraAPI, config, global, gotoTask, utils, log) {
+        async function evalContext(CameraAPI, config = this.config, global = this.global,
+                                   gotoTask = this.gotoTask.bind(this), utils, log) {
             // TODO: Change from eval to eval line-by-line in a loop
             // to make abortion piece of cake.
             const preTaskStats = {
@@ -42,21 +46,48 @@ const TaskManager = {
         }
 
         await evalContext(cameraApi, this.config, this.global, this.gotoTask, taskUtils, log.addLog.bind(log));
+        this.runningTask = null;
     },
-    runAllTasks: async function () {
+    runTasks: async function (tasks = this.tasks) {
+        let sequenceStats = {
+            duration: 0,
+            photos: 0
+        };
         codeEditor.updateTaskCode();
         log.clearLogs();
-        asyncForEach(this.tasks, async (task) => {
-            await runTask(task);
-        })
+        asyncForEach(tasks, async (task) => {
+            await this.runTask(task);
+            sequenceStats.duration += task.stats.duration;
+            sequenceStats.photos += task.stats.photos;
+            if (_.last(tasks) === task)
+                log.addLog(`Full sequence ended in ${sequenceStats.duration}sec(s), taking ${sequenceStats.photos} photos.`);
+        });
+
     },
     pauseTasks: function () {
         alert("Not implemented yet!");
     },
     gotoTask: function (taskName) {
         console.log(`Goto task: ${taskName}`);
+        const idx = this.tasks.findIndex(task => task.name === taskName);
+        if (idx !== -1) {
+            this.runTasks(this.tasks.slice(idx));
+        }
+    },
+    saveTasks() {
+        localStorage.setItem("storedTasksState", JSON.stringify({config: this.config, tasks: this.tasks}))
+    },
+    loadLocalStorageTasks() {
+        let lsTaskMan = localStorage.getItem("storedTasksState");
+        if (!lsTaskMan) return;
+        lsTaskMan = JSON.parse(lsTaskMan);
+        this.config = lsTaskMan.config;
+        this.tasks = lsTaskMan.tasks;
+        codeEditor.setCurrentTask(_.last(this.tasks));
     }
 };
+
+TaskManager.loadLocalStorageTasks();
 
 function defaultTaskName(taskMan) {
     return `Task_${taskMan.tasks.length + 1}`;
@@ -70,10 +101,11 @@ await CameraAPI.halfPressShutter()`;
 // DOM Handlers:
 const newTaskBtn = document.querySelector(".create-task-btn");
 newTaskBtn.addEventListener("click", (evt) => {
-    window.prompt("Name of new task", defaultTaskName(TaskManager));
-    const task = TaskManager.createTask();
-    TaskManager.addTask(task);
-    codeEditor.setCurrentTask(task);
+    if (window.prompt("Name of new task", defaultTaskName(TaskManager))) {
+        const task = TaskManager.createTask();
+        TaskManager.addTask(task);
+        codeEditor.setCurrentTask(task);
+    }
 });
 
 
@@ -123,8 +155,8 @@ function __clearGutters() {
 
 // TODO: Utils:
 async function asyncForEach(arr, callback) {
-    for (let idx = 0; idx < array.length; idx++) {
-        await callback(array[idx], idx, array);
+    for (let idx = 0; idx < arr.length; idx++) {
+        await callback(arr[idx], idx, arr);
     }
 }
 
