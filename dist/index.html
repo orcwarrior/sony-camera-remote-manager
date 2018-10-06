@@ -12,21 +12,21 @@
 <body bgcolor="#000" id="app">
 <div class="main-grid">
     <section id="live-view">
-        <ul class="status-icons">
-            <li rv-each-stat="camera.statusKeys" rv-html="describeParam | call stat camera._forceUpdate">
-            </li>
-        </ul>
-        <p class="center-text" rv-class-hidden="camera.state | eq 'CONNECTED' ">
-            {liveViewText | call} <br/>
-            {camera.state} <br/>
-            <button rv-on-click="camera.reconnect"
-                    rv-if="camera.state | neq 'CONNECTED'">Try Reconnect
-            </button>
-        </p>
-        <div class="liveimg-wrapper">
-            <img rv-src="camera.liveview">
-        </div>
-    </section>
+    <ul class="status-icons">
+        <li rv-each-stat="camera.statusKeys" rv-html="describeParam | call stat camera._forceUpdate">
+        </li>
+    </ul>
+    <p class="center-text" rv-class-hidden="camera.state | eq 'CONNECTED' ">
+        {liveViewText | call} <br/>
+        {camera.state} <br/>
+        <a class="btn" rv-on-click="camera.reconnect" rv-if="camera.state | neq 'CONNECTED'"><span>Try Reconnect</span>
+            <i class="material-icons">refresh</i></a>
+
+    </p>
+    <div class="liveimg-wrapper">
+        <img rv-src="camera.liveview">
+    </div>
+</section>
     <div id="splitter">
         <div class="left" rv-on-click="createMoveHandler | call 'LEFT'">
             <i class="material-icons">chevron_left</i>
@@ -36,52 +36,60 @@
         </div>
         <div class="center" rv-on-click="createMoveHandler | call 'CENTER'"></div>
     </div>
-    <section class="tasks-manager">
-        <header class="tabs-wrapper">
-            <div class="tab" rv-on-click="createChangeTab | call 'Config'"
-                 rv-class-active="activeTab | eq 'Config'">Config
-            </div>
-            <div class="tab" rv-on-click="createChangeTab | call 'Task'"
-                 rv-class-active="activeTab | eq 'Task'">Task Editor
-            </div>
-            <div class="tab" rv-on-click="createChangeTab | call 'Log'"
-                 rv-class-active="activeTab | eq 'Log'">Log
-            </div>
-        </header>
-        <section class="config tab-content" rv-show="activeTab | eq 'Config'">
-            Config content
-        </section>
-
-        <section class="task tab-content" rv-show="activeTab | eq 'Task'">
-            <div class="btns-wrapper">
-                <a class="test-code-btn btn"><span>TEST CODE</span><i class="material-icons">play_arrow</i></a>
-                <a class="create-task-btn btn"><span>CREATE NEW TASK</span><i
-                        class="material-icons">add_circle_outline</i></a>
-            </div>
-            <div class="editor-wrapper">
-                <div id="code-editor"></div>
-            </div>
-        </section>
-
-        <section class="log tab-content" rv-show="activeTab | eq 'Log'">
-            <div class="tab-inner-container logs-container" rv-html="logs | joinMarkup">
-
-            </div>
-            <div class="btns-wrapper justify-end">
-                <a class="test-code-btn btn" rv-on-click="clearLogs">
-                    <span>CLEAR</span><i class="material-icons">delete</i></a>
-            </div>
-        </section>
+    <section class="right-edit-panel">
+    <header class="tabs-wrapper">
+        <div class="tab" rv-on-click="createChangeTab | call 'Config'"
+             rv-class-active="activeTab | eq 'Config'">Config
+        </div>
+        <div class="tab" rv-on-click="createChangeTab | call 'Task'"
+             rv-class-active="activeTab | eq 'Task'">Task Editor
+        </div>
+        <div class="tab" rv-on-click="createChangeTab | call 'Log'"
+             rv-class-active="activeTab | eq 'Log'">Log
+        </div>
+    </header>
+    <section class="config tab-content" rv-show="activeTab | eq 'Config'">
+        Config content
     </section>
+
+    <section class="task tab-content" rv-show="activeTab | eq 'Task'">
+        <div class="btns-wrapper">
+            <a class="test-code-btn btn"><span>TEST CODE</span><i class="material-icons">play_arrow</i></a>
+            <a class="create-task-btn btn"><span>CREATE NEW TASK</span><i
+                    class="material-icons">add_circle_outline</i></a>
+        </div>
+        <div class="editor-wrapper">
+            <div id="code-editor"></div>
+        </div>
+    </section>
+
+    <section class="log tab-content" rv-show="activeTab | eq 'Log'">
+        <div class="tab-inner-container logs-container" rv-html="logs | joinMarkup">
+
+        </div>
+        <div class="btns-wrapper justify-end">
+            <a class="test-code-btn btn" rv-on-click="clearLogs">
+                <span>CLEAR</span><i class="material-icons">delete</i></a>
+        </div>
+    </section>
+</section>
     <section class="tasks-flow">
-        <header>
-            <h3>Camera Task Sequence</h3>
-            <!-- TODO: Switch between them with rivets-->
-            <a class="btn" id="start-tasks"><span>START SEQUENCE</span><i class="material-icons">play_circle_filled</i></a>
-            <a class="btn" id="pause-tasks"><span>PAUSE SEQUENCE</span><i class="material-icons">pause_circle_filled</i></a>
+    <header>
+        <!-- TODO: Switch between them with rivets-->
+        <a class="btn" rv-on-click="startSequence" id="start-tasks"><span>START SEQUENCE</span><i class="material-icons">play_circle_filled</i></a>
+        <a class="btn" rv-on-click="saveSequence"id="pause-tasks"><span>SAVE</span><i class="material-icons">save</i></a>
 
-        </header>
+    </header>
+    <section class="task-container">
+        <div rv-each-task="taskManager.tasks" class="task"  rv-on-click="editTask"
+             rv-class-active="task | eq taskManager.runningTask" rv-class-edited="task | eq codeEditor.currentTaskEdited">
+            <span class="name">{task.name}</span>
+            <div class="code" style="white-space: pre-line">
+                {task.code}
+            </div>
+        </div>
     </section>
+</section>
 </div>
 <script type="text/javascript" src="bundle.js"></script></body>
 </html>
