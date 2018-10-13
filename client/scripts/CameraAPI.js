@@ -79,6 +79,7 @@ const api = {
             .then(handleResponse)
             .catch(err => new Error(err));
     },
+    __cache: {},
     __decorate: function (availableApiList) {
         const apiGroups = _(availableApiList)
             .groupBy(api => api.substr(0, 3))
@@ -86,17 +87,19 @@ const api = {
             .mapValues(getSetArr => getSetArr.map(s => s.substr(3)))
             .tap(console.log)
             .thru(api => {
+                // DK: At this point there's single set and get grouped with Available & Supported too
                 const getDestructed = _.groupBy(api.get,
                     get => ((get.startsWith("Supported") && "supported")
                         || (get.startsWith("Available") && "available")
                         || ("get")));
                 const getOnly = getDestructed.get;
-                const supportAvail = _(getDestructed)
+                const supportAndAvailbale = _(getDestructed)
                     .pick(["supported", "available"])
                     .mapValues(arr => arr.map(s => s.substr(9)))
                     .value();
                 delete api.get;
-                return {...api, ...{get: getOnly}, ...supportAvail};
+                const buildedApi = {...api, ...{get: getOnly}, ...supportAndAvailbale};
+                return buildedApi;
             })
             .value();
         console.log("Final apis groups: ");
@@ -104,13 +107,33 @@ const api = {
 
         const call = this.call = {};
         Object.keys(apiGroups).forEach((method) => {
-            apiGroups[method].forEach(key => {
-                const ccKey = camelCase(key);
-                if (!call[ccKey]) call[ccKey] = {};
+            apiGroups[method].forEach(feature => {
+                const ccFeature = camelCase(feature);
+                if (!call[ccFeature]) call[ccFeature] = {};
 
-                call[ccKey][method] = (params = []) => {
-                    return this._call(`${methodToPrefix[method]}${key}`, params)
-                }
+                call[ccFeature][method] = async (params = []) => {
+                    // if (["supported", "available"].includes(method)) {
+                    //     if (!this.__cache[ccFeature]) this.__cache[ccFeature] = {};
+                    //     else if (this.__cache[ccFeature][method]) return this.__cache[ccFeature][method];
+                    //     const results = await this._call(`${methodToPrefix[method]}${feature}`, params);
+                    //     this.__cache[ccFeature][method] = results;
+                    //     return results;
+                    // }
+                    return this._call(`${methodToPrefix[method]}${feature}`, params)
+                };
+
+                call[ccFeature].next = async () => {
+                    const [currentOpt, availableOps] = await call[ccFeature].available();
+                    const curIdx = availableOps.indexOf(currentOpt);
+                    const nxtIdx = (curIdx + 1) % availableOps.length;
+                    return call[ccFeature].set(availableOps[nxtIdx]);
+                };
+                call[ccFeature].prev = async () => {
+                    const [currentOpt, availableOps] = await call[ccFeature].available();
+                    const curIdx = availableOps.indexOf(currentOpt);
+                    const prevIdx = (curIdx - 1 < 0) ? availableOps.length - 1 : curIdx - 1;
+                    return call[ccFeature].set(availableOps[prevIdx]);
+                };
             })
         });
 

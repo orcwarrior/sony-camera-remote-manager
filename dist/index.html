@@ -13,7 +13,10 @@
 <div class="main-grid">
     <section id="live-view">
     <ul class="status-icons">
-        <li rv-each-stat="camera.statusKeys" rv-html="describeParam | call stat camera._forceUpdate">
+        <li rv-each-stat="camera.statusKeys"
+            rv-on-click="clickHandler"
+            rv-on-contextmenu="rightClickHandler"
+            rv-html="describeParam | call stat camera._forceUpdate">
         </li>
     </ul>
     <p class="center-text" rv-class-hidden="camera.state | eq 'CONNECTED' ">

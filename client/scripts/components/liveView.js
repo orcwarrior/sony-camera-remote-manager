@@ -1,6 +1,7 @@
 import rivets from "rivets"
 import "../rivets.formatters";
 import {camera, CAM_STATE} from "../camera";
+import CameraAPI from "../CameraAPI";
 
 const paramsMeta = {
     cameraFunction: {
@@ -69,6 +70,19 @@ let liveViewModel = {
         if (iconConcrete) return `${prefix}<i class="material-icons">${iconConcrete}</i>`;
         else if (icon) return `<i class="material-icons">${icon}</i><div class="value ${cssClass}">${prefix}${value}</div>`;
         else return `<div class="value ${cssClass}">${prefix}${value}</div>`;
+    },
+    clickHandler: function (event, model) {
+        const {stat} = model;
+        // alert("Click handler: ");
+        console.log(event, model);
+        CameraAPI.call[stat].next();
+    },
+    rightClickHandler: function (event, model) {
+        const {stat} = model;
+        console.log(event, model);
+        CameraAPI.call[stat].prev();
+        event.preventDefault();
+        return false;
     }
 };
 
