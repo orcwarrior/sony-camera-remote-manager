@@ -1,7 +1,7 @@
 import _ from "lodash";
 import ternInitialize from "./components/codeEditorTern";
-
-const apiUrl = "http://localhost:6969/api";
+import utils from "./logic/taskUtils";
+import {apiUrl} from "./config";
 const fetchGETConfig = {
     method: "GET",
     headers: {"Content-Type": "application/json"}
@@ -20,7 +20,7 @@ async function handleResponse(res) {
 
 const api = {
     __photosTaken: 0,
-    _call: (method, params) => {
+    _call: (method, params = []) => {
         console.log("Called call:", method, params);
         const finalParams = Array.isArray(params) ? params : [params];
         return fetch(`${apiUrl}/call`,
@@ -32,6 +32,20 @@ const api = {
     },
     depressShutter: function () {
         return this._call("cancelHalfPressShutter", []);
+    },
+    captureBulb: function (bulbTimeMs) {
+        const call = this._call.bind(this);
+        return this._call("startBulbShooting", [])
+            .then(() => utils.wait(bulbTimeMs))
+            .then(() => this._call("stopBulbShooting"))
+
+    },
+    stopCapturingBulb: function (bulbTimeMs) {
+        return this._call("stopBulbShooting")
+    },
+    captureBulbAndSave: function(bulbTimeMs) {
+        return this.captureBulb(bulbTimeMs)
+            .then((res) => console.log("bulb res: ", res));
     },
     startViewfinder: () => {
         return fetch(`${apiUrl}/viewfinder/start`, fetchGETConfig)
@@ -155,8 +169,6 @@ const api = {
             if (camParams[method])
                 this.call[method].val = camParams[method];
         });
-
-
     }
 };
 
