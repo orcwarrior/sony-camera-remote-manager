@@ -1,6 +1,6 @@
 {
   "name": "sony-camera-remote-manager",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Sony Camera Remote Manager",
   "main": "index.js",
   "scripts": {

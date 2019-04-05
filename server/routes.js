@@ -84,6 +84,7 @@ module.exports = (app, camera) => {
 
     app.use("/api", apiRouter);
 
+    app.use("/static", express.static("static"));
     app.use(express.static("dist"));
     app.use(express.static("photos"));
 };

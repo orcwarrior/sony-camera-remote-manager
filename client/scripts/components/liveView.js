@@ -21,7 +21,7 @@ const paramsMeta = {
         },
     },
     fNumber: {
-        icon: 'camera',
+        icon: "camera",
         PREFIX: "F:"
     },
     flashMode: {disabled: true, prefix: "Flash-sync: "},

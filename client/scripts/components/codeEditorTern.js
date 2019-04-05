@@ -23,6 +23,7 @@ function initialize(apiDefs) {
         "Ctrl-Q": function(cm) { server.rename(cm); },
         "Ctrl-.": function(cm) { server.selectName(cm); }
     });
+    // console.log("Tern server: ", server);
     codeEditor.editor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
 }
 export default initialize;
