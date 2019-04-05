@@ -1,6 +1,6 @@
 import client from "socket.io-client"
 import CameraAPI from "./CameraAPI";
-
+import _ from "lodash";
 const socket = client("http://localhost:6969");
 
 const CAM_STATE = {
@@ -47,11 +47,12 @@ socket.on("camera-disconnected", function (camObj) {
     delete camera.statusKeys;
 });
 
-socket.on("camera-liveview", function (buffer) {
+
+socket.on("camera-liveview", _.throttle(function (buffer) {
     const blob = new Blob([buffer], {type: "image/jpeg"});
     const urlCreator = window.URL || window.webkitURL;
     const imgUrl = urlCreator.createObjectURL(blob);
     camera.liveview = imgUrl;
-});
+}, 1000));
 
 export {camera, CAM_STATE};
