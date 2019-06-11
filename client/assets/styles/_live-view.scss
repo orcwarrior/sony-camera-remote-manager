@@ -31,6 +31,13 @@
           font-size: 18px;
         }
       }
+      .multi-line {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: 40px;
+        justify-content: center;
+      }
     }
   }
   .liveimg-wrapper {
@@ -39,7 +46,7 @@
     width: 100%;
     img {
       object-fit: contain;
-      height: 100%;
+      width: 100%;
     }
   }
   .center-text {
