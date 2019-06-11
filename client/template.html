@@ -11,20 +11,9 @@
     <link rel="stylesheet" href="/static/codemirror.css">
     <script src="/static/codemirror-mode-js.js"></script>
 </head>
-<body bgcolor="#000" id="app">
-<div class="main-grid">
-    <%= require('./partials/live-view.html') %>
-    <div id="splitter">
-        <div class="left" rv-on-click="createMoveHandler | call 'LEFT'">
-            <i class="material-icons">chevron_left</i>
-        </div>
-        <div class="right" rv-on-click="createMoveHandler | call 'RIGHT'">
-            <i class="material-icons">chevron_right</i>
-        </div>
-        <div class="center" rv-on-click="createMoveHandler | call 'CENTER'"></div>
-    </div>
-    <%= require('./partials/right-edit-panel.html') %>
-    <%= require('./partials/tasks-flow.html') %>
+<body bgcolor="#000">
+<div class="main-grid" id="app">
+
 </div>
 </body>
 </html>
