@@ -1,7 +1,9 @@
 import _ from "lodash";
 import ternInitialize from "./components/codeEditorTern";
 import utils from "./logic/taskUtils";
-import {apiUrl} from "./config";
+import config from "./config";
+const {apiUrl} = config;
+
 const fetchGETConfig = {
     method: "GET",
     headers: {"Content-Type": "application/json"}
@@ -20,12 +22,14 @@ async function handleResponse(res) {
 
 const api = {
     __photosTaken: 0,
-    _call: (method, params = []) => {
+    _call: async (method, params = []) => {
         console.log("Called call:", method, params);
         const finalParams = Array.isArray(params) ? params : [params];
-        return fetch(`${apiUrl}/call`,
+        const result = await fetch(`${apiUrl}/call`,
             fetchPostConfig({method, params: finalParams}))
-            .then(handleResponse)
+            .then(handleResponse);
+        console.log(`${method}(${params}).res: `, result);
+        return result;
     },
     halfPressShutter: function () {
         return this._call("actHalfPressShutter", []);
@@ -99,7 +103,7 @@ const api = {
             .groupBy(api => api.substr(0, 3))
             .pick(["get", "set"])
             .mapValues(getSetArr => getSetArr.map(s => s.substr(3)))
-            .tap(console.log)
+            // .tap((val) => console.log("APIs: ", val))
             .thru(api => {
                 // DK: At this point there's single set and get grouped with Available & Supported too
                 const getDestructed = _.groupBy(api.get,
@@ -117,11 +121,12 @@ const api = {
             })
             .value();
         console.log("Final apis groups: ");
-        console.log(apiGroups);
+        console.log(JSON.stringify(apiGroups));
 
         const call = this.call = {};
         Object.keys(apiGroups).forEach((method) => {
-            apiGroups[method].forEach(feature => {
+            const apiGroupsOfMethod = apiGroups[method] || [];
+            apiGroupsOfMethod.forEach(feature => {
                 const ccFeature = camelCase(feature);
                 if (!call[ccFeature]) call[ccFeature] = {};
 
@@ -140,13 +145,16 @@ const api = {
                     const [currentOpt, availableOps] = await call[ccFeature].available();
                     const curIdx = availableOps.indexOf(currentOpt);
                     const nxtIdx = (curIdx + 1) % availableOps.length;
-                    return call[ccFeature].set(availableOps[nxtIdx]);
+                    await call[ccFeature].set(availableOps[nxtIdx]);
+                    return availableOps[nxtIdx];
                 };
                 call[ccFeature].prev = async () => {
                     const [currentOpt, availableOps] = await call[ccFeature].available();
                     const curIdx = availableOps.indexOf(currentOpt);
                     const prevIdx = (curIdx - 1 < 0) ? availableOps.length - 1 : curIdx - 1;
-                    return call[ccFeature].set(availableOps[prevIdx]);
+                    await call[ccFeature].set(availableOps[prevIdx]);
+                    return availableOps[prevIdx];
+
                 };
             })
         });
@@ -164,7 +172,8 @@ const api = {
 
         setTimeout(() => ternInitialize(this), 1);
     },
-    __updateParams: function (camParams) {
+    __updateAvailableAPIs: function (camParams) {
+        console.log(`this.call: `, this.call);
         Object.keys(this.call).forEach(method => {
             if (camParams[method])
                 this.call[method].val = camParams[method];
