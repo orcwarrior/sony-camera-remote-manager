@@ -24,7 +24,10 @@ const webpackOption = {
                     loader: "babel-loader",
                     options: {
                         presets: ["@babel/preset-env"],
-                        plugins: ["@babel/plugin-transform-async-to-generator"]
+                        plugins: [
+                            "@babel/plugin-transform-async-to-generator",
+                            "@babel/plugin-transform-react-jsx",
+                        "@babel/plugin-proposal-class-properties"]
                     }
                 }
             },
