@@ -111,7 +111,7 @@ var minVersionRequired = '2.1.4';
             self.eventPending = false;
             console.log(err);
             if (!err) {
-                // console.log("processEvt.status: ", results.filter(i=>i && i.type === "cameraStatus"));
+                console.log("processEvt.status: ", results.filter(i=>i && i.type === "cameraStatus"));
                 for(var i = 0; i < results.length; i++) {
                     var item = results[i];
                     if(item instanceof Array) {
@@ -126,17 +126,17 @@ var minVersionRequired = '2.1.4';
                     }
                     if(!item) {
                         continue;
-                    } else if(item.type && item.type == 'cameraStatus') {
-                        if(self.status == "NotReady") {
+                    } else if(item.type && item.type === 'cameraStatus') {
+                        if(self.status === "NotReady") {
                             self.connected = false;
                             console.log("SonyWifi: disconnected, trying to reconnect");
                             setTimeout(function(){self.connect(); }, 2500);
                         }
-                        if(self.status != item.cameraStatus) {
+                        if(self.status !== item.cameraStatus) {
                             console.log("SonyWifi: status", item.cameraStatus);
                             self.status = item.cameraStatus;
                             self.emit('status', self.status);
-                            if(self.status == "IDLE") {
+                            if(self.status === "IDLE") {
                                 self.ready = true;
                                 self.emit('ready', self.status);
                             } else self.ready = false;
