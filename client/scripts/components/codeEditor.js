@@ -20,6 +20,7 @@ import "../../../node_modules/codemirror/keymap/sublime";
 
 import "../../../node_modules/codemirror/theme/darcula.css";
 
+/**
 
 const taskEditorTab = document.querySelector(".task.tab-content");
 
@@ -57,3 +58,5 @@ let editorModel = {
 
 
 export default editorModel;
+
+ **/

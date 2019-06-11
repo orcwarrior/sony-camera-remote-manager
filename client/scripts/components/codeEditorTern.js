@@ -11,9 +11,10 @@ window.tern = tern;
 function initialize(apiDefs) {
     // console.log(ternEcmaScript);
     // console.log(apiDefs);
-    const CameraAPI = _.omit(apiDefs, ["__decorate", "__updateParams"]);
+    const CameraAPI = _.omit(apiDefs, ["__decorate", "__updateAvailableAPIs"]);
 
     const server = new CodeMirror.TernServer({defs: [ternEcmaScript, {CameraAPI, utils: taskUtils}]});
+    /**
     codeEditor.editor.setOption("extraKeys", {
         "Ctrl-Space": function(cm) { server.complete(cm); },
         "Ctrl-I": function(cm) { server.showType(cm); },
@@ -25,5 +26,6 @@ function initialize(apiDefs) {
     });
     // console.log("Tern server: ", server);
     codeEditor.editor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
+     **/
 }
 export default initialize;
