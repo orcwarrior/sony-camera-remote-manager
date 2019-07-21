@@ -7,7 +7,7 @@ let taskSeqModel = {
     taskManager,
     editTask: function (evt, ctx) {
         console.log(`edit task: `, ctx.task);
-        codeEditor.setCurrentTask(ctx.task);
+        codeEditor.setEditorCode(ctx.task);
     },
     startSequence: function (evt, ctx) {
         console.log(`running task sequence`);
