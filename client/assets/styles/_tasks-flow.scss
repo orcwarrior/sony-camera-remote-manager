@@ -1,20 +1,51 @@
-
-.tasks-flow {
-  position: relative;
-  grid-area: footer;
-  background: #050705;
-  overflow: hidden;
-  header {
-    position: absolute;
-    left: 8px;
-    top: 8px;
+#app .tasks-strip {
+  position: fixed;
+  bottom: -20vh;
+  transition: bottom 300ms ease;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 20vh;
+  background: #1e1e1e;
+  &.drawed {
+    bottom: 0vh;
+    .tasks-handle-wrapper {
+      top: 0; height: 0px;
+    }
   }
+
+  .tasks-handle-wrapper {
+    position: absolute;
+    z-index: 0;
+    overflow: hidden;
+    top: -24px;
+    height: 24px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transition: top 300ms ease, height 300ms ease;
+    .tasks-handle {
+      border-top-left-radius: 25%;
+      border-top-right-radius: 25%;
+      width: 5%;
+      min-width: 48px;
+      height: 100%;
+      background-image: linear-gradient(#292929, #1e1e1e);
+      text-align: center;
+      cursor: pointer;
+      color: #ccc;
+    }
+  }
+
   .task-container {
+    position: relative;
+    z-index: 2;
     margin-top: 48px;
     display: flex;
     flex-direction: row;
     width: 100%;
     overflow-x: auto;
+
     .task {
       padding: 0 2px 2px 0;
       text-align: right;
@@ -28,15 +59,18 @@
       background: #000;
       border: 1px #222 solid;
       cursor: pointer;
+
       &.active {
         border: 1px #777 solid;
       }
+
       &.edited {
         > .name {
           color: #b94;
           font-weight: 500;
         }
       }
+
       .code {
         width: 200%;
         text-align: left;

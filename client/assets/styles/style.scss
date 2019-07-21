@@ -9,47 +9,27 @@ html, body {
 @import "./right-edit-panel";
 @import "./tasks-flow";
 body {
+  #app {height: 100%;}
 
   .main-grid {
     display: grid;
+    //grid-template-rows: auto 164px;
+    grid-template-columns: 68% 3px auto; // (ctrl by react-split-grid)
+    grid-template-areas: "view splitter sidebar";
     width: 100%;
     height: 100%;
     background: #000;
     color: #999;
-    grid-template-columns: 68% 2px 1fr;
-    grid-template-rows: auto 164px;
-    grid-template-areas: "view splitter sidebar" "footer footer footer";
-
-
-    #splitter {
-      position: relative;
-      grid-area: splitter;
-      width: 100%;
-      height: 100%;
-      background: #666;
-      .left, .right {
-        position: absolute;
-        cursor: pointer;
-        top: 4px;
-        width: 32px;
-        > i {
-          color: #ccc;
-        }
-      }
-      .left {
-        left: -32px;
-      }
-      .right {
-        left: 8px;
-      }
-      .center {
-        position: absolute;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-      }
-
-    }
+    overflow-x: hidden;
+    user-select: none;
+  }
+  .split-handle {
+    width: 100%;
+    background: #fff;
+    opacity: 0.2;
+    cursor: ew-resize;
+    user-drag: none;
+    user-select: none;
   }
   .justify-center {
     justify-content: center;

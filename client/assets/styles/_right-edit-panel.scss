@@ -1,13 +1,14 @@
-.main-grid > .right-edit-panel {
+.main-grid .right-edit-panel {
   grid-area: sidebar;
   background: #040404;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  //width: 100%;
   height: 100%;
   .tabs-wrapper {
     display: flex;
     justify-content: flex-end;
+    margin-right: 16px;
     padding: 8px 24px 0;
     background: #040404;
     text-transform: uppercase;
