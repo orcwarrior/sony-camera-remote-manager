@@ -1,4 +1,4 @@
-import CameraAPI from "../CameraAPI";
+import CameraAPI from "../../CameraAPI";
 import React from "react";
 
 

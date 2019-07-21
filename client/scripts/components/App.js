@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import cameraDefault from "../cameraDefault";
 import {CameraProvider} from "./hoc/CameraContext";
-import {CameraLiveView} from "./CameraLiveView";
 import {handleCameraSocketMsgs} from "../cameraSocketIOHandler";
 import CameraAppLayout from "./CameraAppLayout";
 import {EditorCodeProvider} from "./rightPanel/TaskEditor/EditorCodeContext";

@@ -1,12 +1,12 @@
 // import rivets from "rivets"
-import "../rivets.formatters";
-import CAM_STATE from "../cameraState.enum";
+import "../../rivets.formatters";
+import CAM_STATE from "../../cameraState.enum";
 import React from "react";
 import paramsMeta from "./CameraLiveView.paramsMeta";
-import withCamera from "./hoc/withCamera";
-import {reconnectCamera} from "../cameraSocketIOHandler";
+import withCamera from "../hoc/withCamera";
+import {reconnectCamera} from "../../cameraSocketIOHandler";
 import {CameraParam} from "./CameraParam";
-import {LiveviewImg} from "./LiveviewImg";
+import {LiveviewImg} from "../LiveviewImg";
 
 
 function CameraStatusDescription({state}) {

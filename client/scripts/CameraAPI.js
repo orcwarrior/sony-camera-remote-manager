@@ -1,5 +1,4 @@
 import _ from "lodash";
-import ternInitialize from "./components/codeEditorTern";
 import utils from "./logic/taskUtils";
 import config from "./config";
 const {apiUrl} = config;
@@ -169,8 +168,6 @@ const api = {
         function camelCase(s) {
             return `${s[0].toLowerCase()}${s.substr(1)}`
         }
-
-        setTimeout(() => ternInitialize(this), 1);
     },
     __updateAvailableAPIs: function (camParams) {
         console.log(`this.call: `, this.call);

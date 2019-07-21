@@ -1,5 +1,5 @@
 import React, {Component, PropTypes, Children} from "react"
-import camera from "../../camera"
+import camera from "../../cameraDefault"
 
 const CameraContext = React.createContext(camera);
 
