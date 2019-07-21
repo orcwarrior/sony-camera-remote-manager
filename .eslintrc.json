@@ -1,5 +1,9 @@
 {
   "extends": ["eslint:recommended", "plugin:node/recommended"],
+  "env": {
+    "node": true,
+    "es6": true
+  },
   "parserOptions": {
     "ecmaVersion": 6
   },
@@ -11,6 +15,8 @@
     "node/prefer-global/url-search-params": ["error", "always"],
     "node/prefer-global/url": ["error", "always"],
     "quotes": ["error", "double", { "avoidEscape": true }],
-    "no-console": ["off"]
+    "no-console": ["off"],
+    "indent": ["warn", 2],
+    "semi": ["error", "always"]
   }
 }
