@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import cameraDefault from "../camera";
+import cameraDefault from "../cameraDefault";
 import {CameraProvider} from "./hoc/CameraContext";
 import {CameraLiveView} from "./CameraLiveView";
 import {handleCameraSocketMsgs} from "../cameraSocketIOHandler";
+import CameraAppLayout from "./CameraAppLayout";
+import {EditorCodeProvider} from "./rightPanel/TaskEditor/EditorCodeContext";
+import {TasksProvider} from "./rightPanel/TaskEditor/TasksContext";
 
-function CameraAppLayout(props) {
-    return <CameraLiveView/>;
-};
 
 class App extends React.Component {
     state = cameraDefault;
@@ -25,7 +25,11 @@ class App extends React.Component {
         const {children} = this.props;
         // console.log("Render App, camera:", camera);
 
-        return <CameraProvider value={decoratedCamera}>{children}</CameraProvider>
+        return <EditorCodeProvider><TasksProvider>
+            <CameraProvider value={decoratedCamera}>
+                {children}
+            </CameraProvider>
+            </TasksProvider></EditorCodeProvider>
     }
 };
 
