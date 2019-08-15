@@ -1,3 +1,4 @@
+const _ = require("lodash")
 module.exports = (server, camera) => {
 
     const io = require("socket.io")(server);
@@ -19,14 +20,20 @@ module.exports = (server, camera) => {
         camera.connected = false;
     });
 
-    camera.on("liveviewJpeg", (imgBuffer) => {
+    camera.on("liveviewJpeg", _.throttle( (imgBuffer) => {
         io.emit("camera-liveview", imgBuffer);
-    });
+    }, 100));
 
     io.on("connection", function (socket) {
-        console.log("IO: a user connected");
-        if (camera.connected)
+        console.log("IO: a user connected, cam.conn:", camera.connected);
+        if (camera.connected) {
+            console.log("User connection info send!");
             socket.emit("camera-connected", camera);
+        }
+
+        socket.on("client-response", (socket, d) => {
+            console.log("Client was connected back: ", socket, d)
+        });
 
         socket.on("camera-reconnect", function (socket) {
             console.log("Trying reconnection on client demand...");
