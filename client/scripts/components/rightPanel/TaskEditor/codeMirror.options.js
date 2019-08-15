@@ -1,3 +1,5 @@
+import {defaultTaskCode} from "../../../logic/TaskManager";
+
 export const options =  {
     lineNumbers: true,
     theme: "darcula",
@@ -9,7 +11,5 @@ export const options =  {
     indentUnit: 1,
     gutters: ["exec-cur-line"],
 
-    value: `// No task loaded, treat this code as Scratchpad ;-)
-await CameraAPI.captureAndSave();
-`
+    value: defaultTaskCode("TEST-TASK")
 };

@@ -4,7 +4,6 @@ import CAM_STATE from "../../cameraState.enum";
 import React from "react";
 import paramsMeta from "./CameraLiveView.paramsMeta";
 import withCamera from "../hoc/withCamera";
-import {reconnectCamera} from "../../cameraSocketIOHandler";
 import {CameraParam} from "./CameraParam";
 import {LiveviewImg} from "../LiveviewImg";
 
@@ -17,14 +16,13 @@ function CameraStatusDescription({state}) {
     else return null;
 }
 
-function _CameraLiveView({camera: {camStatus, state, _setState}}) {
+function _CameraLiveView({camera: {camStatus, state}, setCamera, cameraReconnect}) {
 
     // "{"param":"fNumber",
     // "data":{"current":"4.0",
     // "available":["1.4","1.6","1.7","2.0","2.2","2.5","2.8","3.2","3.5","4.0","4.5","5.0","5.6","6.3","7.1","8.0","9.0","10","11","13","14","16"]}}"
-    console.log(`_setState: `, _setState);
     const forcedUpdates = {
-        postviewImageSize: (newVal) => _setState(({camStatus}) => {
+        postviewImageSize: (newVal) => setCamera(({camStatus}) => {
             console.log(`(prev)camStatus: `, camStatus);
             const state = {camStatus: {
                     ...camStatus,
@@ -53,7 +51,7 @@ function _CameraLiveView({camera: {camStatus, state, _setState}}) {
             <CameraStatusDescription state={state}/>
             <br/>
             <br/>
-            {state !== "CONNECTED" ? <a className="btn" onClick={reconnectCamera}>
+            {state !== "CONNECTED" ? <a className="btn" onClick={cameraReconnect}>
                 <span>Try Reconnect</span>
                 <i className="material-icons">refresh</i>
             </a> : null}
@@ -62,7 +60,7 @@ function _CameraLiveView({camera: {camStatus, state, _setState}}) {
     return <section id="live-view">
         {renderCameraParams()}
         {renderCameraStatusMsgs()}
-        <LiveviewImg/>
+        <LiveviewImg camStatus={camStatus}/>
     </section>
 };
 

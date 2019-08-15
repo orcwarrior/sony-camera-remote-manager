@@ -89,5 +89,9 @@
       font-size: 13px;
       content: "(Looks like there's no logs to watch right now...)";
     }
+    & b {
+      font-weight: bolder;
+      color: #888;
+    }
   }
 }

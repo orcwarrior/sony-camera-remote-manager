@@ -1,4 +1,4 @@
-import {TasksContext} from "../rightPanel/TaskEditor/TasksContext";
+import {TasksContext} from "../../logic/contexts/TasksContext";
 import React, {useContext, useState} from "react";
 
 
@@ -7,7 +7,7 @@ const TasksStrip = ({width}) => {
   const [drawerOpened, setDrawerOpened] = useState(false);
 
   function renderNoTasksMsg() {
-    return <div>Seems like you don't have any task sequence to run at the camera by now.</div>
+    return <div className="no-tasks">Seems like you don't have any task sequence to run at the camera by now.</div>
   }
   function renderTasksStripHandle() {
     return <div className="tasks-handle-wrapper" ><div className="tasks-handle"><i className="material-icons">expand_less</i></div></div>
