@@ -10,7 +10,8 @@ const SplitPanel = ({children, onSplitResize = () => null}) => {
   const cannotSetThatRatio = (ratio) => ((1 - ratio) * window.innerWidth < RIGHT_PANEL_MIN_WIDTH);
   const gridTemplateColumns = (ratio) => {
     const winWidth = window.innerWidth;
-    return `${ratio * 100}% 3px auto`;
+    const restSize = `${(1 - ratio) * 100}%`;
+    return `${ratio * 100}% 3px ${restSize}`;
   };
   const storeMousePosRatio = (event) => lastMouseRatio = (event.clientX / window.innerWidth);
   const resizeSplitPanel = (event) => {
