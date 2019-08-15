@@ -32,6 +32,7 @@
     "react": "^16.8.6",
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.8.6",
+    "react-s-alert": "^1.4.1",
     "socket.io": "^2.1.1",
     "sony-camera": "0.0.6",
     "tern": "^0.22.0"
