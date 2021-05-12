@@ -23,7 +23,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "body-parser": "latest",
-    "codemirror": "^5.40.0",
+    "codemirror": "^5.58.2",
     "express": "^4.16.3",
     "html-loader": "^0.5.5",
     "lodash": "latest",
