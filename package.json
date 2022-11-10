@@ -28,7 +28,7 @@
     "html-loader": "^0.5.5",
     "lodash": "latest",
     "material-design-icons": "^3.0.1",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.5.0",
     "sony-camera": "0.0.6",
     "tern": "^0.22.0"
   },
@@ -46,7 +46,7 @@
     "node-sass": "^4.8.3",
     "rivets": "^0.9.6",
     "sass-loader": "^6.0.7",
-    "socket.io-client": "^2.1.1",
+    "socket.io-client": "^2.5.0",
     "style-loader": "^0.20.3",
     "webpack": "^4.17.2",
     "webpack-build-notifier": "^0.1.29",
