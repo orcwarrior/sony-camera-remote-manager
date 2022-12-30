@@ -25,7 +25,7 @@
     "body-parser": "latest",
     "codemirror": "^5.40.0",
     "express": "^4.16.3",
-    "html-loader": "^0.5.5",
+    "html-loader": "^4.2.0",
     "lodash": "latest",
     "material-design-icons": "^3.0.1",
     "socket.io": "^2.1.1",
@@ -33,23 +33,23 @@
     "tern": "^0.22.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.20.7",
     "@babel/plugin-transform-async-to-generator": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "babel-loader": "^8.0.2",
-    "css-loader": "^0.28.11",
+    "babel-loader": "^8.3.0",
+    "css-loader": "^6.7.3",
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^7.0.1",
-    "file-loader": "^2.0.0",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.2",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.7.2",
     "node-sass": "^4.8.3",
     "rivets": "^0.9.6",
-    "sass-loader": "^6.0.7",
+    "sass-loader": "^13.2.0",
     "socket.io-client": "^2.1.1",
-    "style-loader": "^0.20.3",
-    "webpack": "^4.17.2",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.75.0",
     "webpack-build-notifier": "^0.1.29",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^5.0.1"
   }
 }
