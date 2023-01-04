@@ -33,7 +33,7 @@
     "tern": "^0.22.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.20.7",
     "@babel/plugin-transform-async-to-generator": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
@@ -41,7 +41,7 @@
     "eslint": "^5.5.0",
     "eslint-plugin-node": "^7.0.1",
     "file-loader": "^2.0.0",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^0.4.2",
     "node-sass": "^4.8.3",
     "rivets": "^0.9.6",
